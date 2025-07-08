@@ -1,0 +1,41 @@
+{
+  "name": "react-native-gradient-wrapper",
+  "version": "1.0.0",
+  "description": "A flexible React Native gradient wrapper component with animated border and background gradients.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "keywords": [
+    "react-native",
+    "gradient",
+    "linear-gradient",
+    "wrapper",
+    "animated",
+    "border",
+    "component"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bersuad/react-native-gradient-wrapper"
+  },
+  "author": "Bersufekad Adane",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-native": ">=0.68.0",
+    "react-native-linear-gradient": "^2.8.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.37",
+    "@types/react-native": "^0.73.0",
+    "typescript": "^5.0.0"
+  }
+}

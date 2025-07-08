@@ -1,0 +1,1 @@
+export * as GradientWrapper from './src/index';
