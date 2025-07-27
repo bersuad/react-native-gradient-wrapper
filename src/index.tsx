@@ -1,1 +1,0 @@
-export {default as GradientWrapper} from './components/GradientWrapper';
