@@ -33,7 +33,7 @@ Expo will automatically handle linking and compatibility.
 
 ---
 
-## <img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/src/assets/demo-button.png" alt="Animated Gradient Button" width="250" />
+## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/demo-button.png" alt="Animated Gradient Button" width="250" />
 ## Usage
 ```tsx
 import GradientWrapper from './GradientWrapper';
@@ -65,7 +65,7 @@ import GradientWrapper from './GradientWrapper';
 
 ```
 
-## <img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
+## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
 ## Usage
 ```tsx
 import GradientWrapper from './GradientWrapper';
