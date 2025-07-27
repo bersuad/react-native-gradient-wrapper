@@ -1,6 +1,6 @@
 {
   "name": "react-native-gradient-wrapper",
-  "version": "1.0.34",
+  "version": "1.0.4",
   "description": "A flexible React Native gradient wrapper component with animated border and background gradients.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
