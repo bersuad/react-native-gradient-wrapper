@@ -26,34 +26,65 @@ Then copy the `GradientWrapper.tsx` file into your project.
 If you're using **Expo**, install the linear gradient library with:
 
 ```bash
-npx expo install react-native-gradient-wrapper react-native-linear-gradient
+npx expo install react-native-gradient-wrapper expo-linear-gradient
 ```
 
 Expo will automatically handle linking and compatibility.
 
 ---
 
+## <img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/src/assets/demo-button.png" alt="Animated Gradient Button" width="250" />
 ## Usage
-
 ```tsx
 import GradientWrapper from './GradientWrapper';
 
 <GradientWrapper
-  backgroundGradient={["#ff7e5f", "#feb47b"]}
-  borderGradient={["#6a11cb", "#2575fc"]}
-  borderRadius={20}
-  borderWidth={1} // don't forget to make this 0(zero) if you aren't using it
-  backgroundRotation="clockwise"
-  borderRotation="anticlockwise"
-  animated
-  stopBackgroundAfter={5000} // stop after 5s
-  stopBorderAfter={3000}    // stop after 10s
-  angle={45}
-  backgroundRotationSpeed={9000} // background spins every 3 seconds
-  borderRotationSpeed={8000}
+  borderGradient={['rgba(0, 0, 255, 0.9)', 'rgba(186, 0, 146, 0.97)']} 
+  borderRadius={30}
+  stopBorderAfter={300000} // stop after 30 sec
+  borderAngle={46.38} // instead of start and end X,Y you can use angle
+  borderWidth={2}
+  contentStyle={{
+    height: 35,
+    width: '100%',
+    alignItems: 'center',
+    alignContent: 'center',
+    flex: 1,
+    padding: 10,
+  }}
+  style={{ margin: 0 }}
+  enableFeedback
+  backgroundGradient={['rgb(155, 70, 0)', 'rgb(50, 0, 56)']}
+  backgroundLocations={[0, 0.6, 1]}
+  angle={90} // angle for background color
 >
-  <Text style={{ color: '#fff' }}>Hello Gradient</Text>
+  <TouchableOpacity onPress={() => setSpeed(prev => Math.max(1000, prev - 500))}>
+    <Text style={{ color: '#FFFFFF' }}>Animated Border Button</Text>
+  </TouchableOpacity>
 </GradientWrapper>
+
+```
+
+## <img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
+## Usage
+```tsx
+import GradientWrapper from './GradientWrapper';
+
+    <GradientWrapper
+      backgroundGradient={presets[preset]}
+      backgroundRotationSpeed={speed}
+      animated={true} //color rotation
+      style={styles.container}
+      borderWidth={0}
+      angle={46.36}
+    //   backgroundLocations={[0,0.5, 1]}//for background location
+      borderRadius={0}
+    >
+      <View style={styles.content}>
+        <Text style={styles.title}>Animated Background Gradient</Text>
+      </View>
+    </GradientWrapper>
+
 ```
 
 ---
