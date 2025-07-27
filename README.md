@@ -65,14 +65,14 @@ import GradientWrapper from './GradientWrapper';
 
 ```
 
-## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
+
 ## Usage
 ```tsx
 import GradientWrapper from './GradientWrapper';
 
     <GradientWrapper
-      backgroundGradient={presets[preset]}
-      backgroundRotationSpeed={speed}
+      backgroundGradient={['#5A3F37', '#2C7744', '#5A3F37']}
+      backgroundRotationSpeed={4000}
       animated={true} //color rotation
       style={styles.container}
       borderWidth={0}
@@ -86,7 +86,7 @@ import GradientWrapper from './GradientWrapper';
     </GradientWrapper>
 
 ```
-
+## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
 ---
 
 ## Props Reference
