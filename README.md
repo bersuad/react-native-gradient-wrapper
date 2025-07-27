@@ -13,7 +13,7 @@
 
 ---
 
-## 🔧 Installation
+## Installation
 
 Install peer dependencies first:
 
@@ -33,10 +33,11 @@ Expo will automatically handle linking and compatibility.
 
 ---
 
+## Border Gradient Usage
+
 ## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/demo-button.png" alt="Animated Gradient Button" width="250" />
-## Usage
 ```tsx
-import GradientWrapper from './GradientWrapper';
+import { GradientWrapper } from 'react-native-gradient-wrapper';
 
 <GradientWrapper
   borderGradient={['rgba(0, 0, 255, 0.9)', 'rgba(186, 0, 146, 0.97)']} 
@@ -65,10 +66,11 @@ import GradientWrapper from './GradientWrapper';
 
 ```
 
+## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
 
-## Usage
+## Background Color Usage
 ```tsx
-import GradientWrapper from './GradientWrapper';
+import { GradientWrapper } from 'react-native-gradient-wrapper';
 
     <GradientWrapper
       backgroundGradient={['#5A3F37', '#2C7744', '#5A3F37']}
@@ -86,7 +88,7 @@ import GradientWrapper from './GradientWrapper';
     </GradientWrapper>
 
 ```
-## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
+
 ---
 
 ## Props Reference
