@@ -21,8 +21,6 @@ Install peer dependencies first:
 npm install react-native-gradient-wrapper react-native-linear-gradient
 ```
 
-Then copy the `GradientWrapper.tsx` file into your project.
-
 If you're using **Expo**, install the linear gradient library with:
 
 ```bash
@@ -67,6 +65,7 @@ import { GradientWrapper } from 'react-native-gradient-wrapper';
 ```
 
 ## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
+## <video src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/gradient-demo.mp4" controls autoplay loop width="100%"/>
 
 ## Background Color Usage
 ```tsx
