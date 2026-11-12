@@ -57,17 +57,31 @@ export const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    progress.setValue(0);
-    const loop = Animated.loop(
-      Animated.timing(progress, {
+    let cancelled = false;
+    let current: Animated.CompositeAnimation | undefined;
+
+    // Restart each cycle by hand instead of Animated.loop: on web the native-driver
+    // loop runs only once. The seam is invisible because progress n and 0 both
+    // show layer 0 alone.
+    const runCycle = () => {
+      if (cancelled) return;
+      progress.setValue(0);
+      current = Animated.timing(progress, {
         toValue: n,
         duration: (n + 0.8) * (speed || 500),
         easing: Easing.inOut(Easing.ease),
         useNativeDriver: true,
-      }),
-    );
-    loop.start();
-    return () => loop.stop();
+      });
+      current.start(({ finished }) => {
+        if (finished) runCycle();
+      });
+    };
+
+    runCycle();
+    return () => {
+      cancelled = true;
+      current?.stop();
+    };
   }, [n, speed, progress]);
 
   const opacities = useMemo(

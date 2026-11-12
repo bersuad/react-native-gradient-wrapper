@@ -1,5 +1,41 @@
-import { Animated } from 'react-native';
-import { layerOpacity } from '../components/AnimatedBackground';
+import { Animated, View } from 'react-native';
+import { act, render } from '@testing-library/react-native';
+import { AnimatedBackground, layerOpacity } from '../components/AnimatedBackground';
+
+describe('AnimatedBackground', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
+  it('starts a new cycle each time one finishes', async () => {
+    const timing = jest.spyOn(Animated, 'timing');
+    const { unmount } = await render(
+      <AnimatedBackground
+        Gradient={View}
+        colors={['red', 'green', 'blue']}
+        speed={100}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+      />,
+    );
+    expect(timing).toHaveBeenCalledTimes(1);
+
+    // Each cycle is (3 + 0.8) * 100ms.
+    await act(async () => {
+      jest.advanceTimersByTime(3 * 380 + 100);
+    });
+    expect(timing.mock.calls.length).toBeGreaterThanOrEqual(3);
+
+    await unmount();
+    const callsAfterUnmount = timing.mock.calls.length;
+    await act(async () => {
+      jest.advanceTimersByTime(2000);
+    });
+    expect(timing).toHaveBeenCalledTimes(callsAfterUnmount);
+  });
+});
 
 // Reads the current value of a number or an interpolation.
 const valueOf = (v: number | Animated.AnimatedInterpolation<number>): number =>

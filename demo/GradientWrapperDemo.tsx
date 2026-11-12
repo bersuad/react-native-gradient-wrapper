@@ -14,7 +14,23 @@ const GradientWrapperDemo = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>GradientWrapper Demo</Text>
-      <Text style={styles.subheading}>Local v1.0.43 — noFill / overlayBg</Text>
+      <Text style={styles.subheading}>Local v1.1.0 — borderSweep button</Text>
+
+      <GradientWrapper
+        borderGradient={['#00e5ff', '#7b61ff']}
+        backgroundGradient={['#0b1220', '#152238']}
+        borderRotation="clockwise"
+        borderRotationSpeed={2200}
+        borderSweep
+        borderSweepSpan={0.2}
+        borderWidth={3}
+        borderRadius={28}
+        onPress={() => {}}
+        style={styles.button}
+        contentStyle={styles.buttonContent}
+      >
+        <Text style={styles.cardText}>Sweep Border Button</Text>
+      </GradientWrapper>
 
       <GradientWrapper
         borderGradient={['#FF5F6D', '#FFC371']}
@@ -180,6 +196,16 @@ const styles = StyleSheet.create({
   },
   overlayBlock: {
     backgroundColor: 'rgba(255,255,255,0.08)',
+  },
+  button: {
+    width: '100%',
+    maxWidth: 320,
+    height: 52,
+    alignSelf: 'center',
+  },
+  buttonContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -1,5 +1,6 @@
 import {
   angleToDirection,
+  buildBorderSweepGradient,
   getFullBorderGradient,
   getRotatingLayerStyle,
   shouldUseIndividualBorders,
@@ -101,6 +102,17 @@ describe('getFullBorderGradient', () => {
     const result = getFullBorderGradient({ borderTopGradient: ['#f00'], isDark: false });
     expect(result.colors).toEqual(['#f00', '#f00']);
     expect(result.locations).toEqual([0, 1]);
+  });
+});
+
+describe('buildBorderSweepGradient', () => {
+  it('builds a short highlight with transparent ring elsewhere', () => {
+    const result = buildBorderSweepGradient(['#00e5ff', '#7b61ff'], 0.2);
+    expect(result.colors[0]).toBe('rgba(0,0,0,0)');
+    expect(result.colors[2]).toBe('#00e5ff');
+    expect(result.locations[0]).toBe(0);
+    expect(result.locations[result.locations.length - 1]).toBe(1);
+    expect(result.locations[4]).toBe(0.2);
   });
 });
 

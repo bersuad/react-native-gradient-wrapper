@@ -23,6 +23,7 @@
 - `rgb()` and `rgba()` colors crashed `animated`.
 - The border rotation restarted on every render while the background was animating.
 - Animations kept running after unmount when a stop timer was set.
+- On web, `animated` stopped after one color cycle.
 - A forced square size (60% of the screen width) and a pill-shaped default radius were removed. The default `borderRadius` is `10` again.
 
 ## 1.0.42

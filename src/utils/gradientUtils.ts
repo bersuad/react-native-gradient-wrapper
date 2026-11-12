@@ -103,6 +103,26 @@ export const getFullBorderGradient = ({
 };
 
 /**
+ * Builds a localized border highlight for perimeter sweep rotation.
+ * Most of the ring is transparent so a short bright segment travels around
+ * the control as the layer spins — like one edge running around the button.
+ */
+export const buildBorderSweepGradient = (
+  colors: string[],
+  span = 0.22,
+): { colors: string[]; locations: number[] } => {
+  const highlight = colors[0] ?? '#ffffff';
+  const mid = colors[1] ?? highlight;
+  const clear = 'rgba(0,0,0,0)';
+  const s = Math.min(0.8, Math.max(0.05, span));
+
+  return {
+    colors: [clear, mid, highlight, mid, clear, clear],
+    locations: [0, s * 0.35, s * 0.5, s * 0.65, s, 1],
+  };
+};
+
+/**
  * Style for a layer that rotates inside a w×h box. The layer is a square the
  * size of the box's diagonal, centred, so the corners stay covered at every angle.
  */

@@ -55,7 +55,7 @@ export const GradientWrapper = createGradientWrapper(MyGradient);
 
 ### Gradient border button
 
-<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/demo-button.png" alt="Gradient border button" width="250" />
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/gradient-button.gif" alt="Gradient border button scaling down when pressed" width="360" />
 
 ```tsx
 <GradientWrapper
@@ -74,11 +74,14 @@ export const GradientWrapper = createGradientWrapper(MyGradient);
 
 ### Spinning border
 
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/spinning-border.gif" alt="Card with a multicolor border that spins continuously" width="360" />
+
 The border turns continuously. `borderRotationSpeed` is the time for one full turn. With `stopBorderAfter`, the current turn finishes and the border comes to rest.
 
 ```tsx
 <GradientWrapper
-  borderGradient={['#f7971e', '#ffd200', '#f7971e']}
+  borderGradient={['#ff512f', '#ffd200', '#21d4fd', '#b721ff', '#ff512f']}
+  borderAngle={0}
   borderRotation="clockwise"
   borderRotationSpeed={3000}
   stopBorderAfter={30000}
@@ -93,7 +96,7 @@ The border turns continuously. `borderRotationSpeed` is the time for one full tu
 
 ### Animated background
 
-<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/background-demo.png" alt="Animated background gradient" width="250" />
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/animated-background.gif" alt="Background gradient cycling through brown, green and blue" width="360" />
 
 With `animated`, the background cycles through every color in `backgroundGradient`. `backgroundRotationSpeed` sets how long each color step takes.
 
@@ -101,7 +104,7 @@ With `animated`, the background cycles through every color in `backgroundGradien
 <GradientWrapper
   animated
   backgroundGradient={['#5A3F37', '#2C7744', '#1A2980']}
-  backgroundRotationSpeed={4000}
+  backgroundRotationSpeed={1500}
   angle={46}
   borderWidth={0}
   borderRadius={0}

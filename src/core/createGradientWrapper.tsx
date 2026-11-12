@@ -12,6 +12,7 @@ import {
 
 import {
   angleToDirection,
+  buildBorderSweepGradient,
   getFullBorderGradient,
   getRotatingLayerStyle,
   shouldUseIndividualBorders,
@@ -62,6 +63,8 @@ export const createGradientWrapper = (
     animated = false,
     noFill = false,
     overlayBg = false,
+    borderSweep = false,
+    borderSweepSpan = 0.22,
   }) => {
     const systemTheme = useColorScheme();
     const isDark = theme === 'dark' || (theme === 'auto' && systemTheme === 'dark');
@@ -138,16 +141,25 @@ export const createGradientWrapper = (
       borderRightGradient,
     });
 
-    const { colors: fullBorderGradient, locations: calculatedBorderLocations } =
-      getFullBorderGradient({
-        borderGradient,
-        borderTopGradient,
-        borderBottomGradient,
-        borderLeftGradient,
-        borderRightGradient,
-        borderLocations,
-        isDark,
-      });
+    const fullBorder = getFullBorderGradient({
+      borderGradient,
+      borderTopGradient,
+      borderBottomGradient,
+      borderLeftGradient,
+      borderRightGradient,
+      borderLocations,
+      isDark,
+    });
+
+    const rotatingBorder =
+      borderSweep && borderRotation !== 'none'
+        ? buildBorderSweepGradient(fullBorder.colors, borderSweepSpan)
+        : fullBorder;
+
+    const fullBorderGradient = fullBorder.colors;
+    const calculatedBorderLocations = fullBorder.locations;
+    const rotatingBorderColors = rotatingBorder.colors;
+    const rotatingBorderLocations = rotatingBorder.locations;
 
     const { start: bgStart, end: bgEnd } = angleToDirection(angle);
     const { start: borderStart, end: borderEnd } = angleToDirection(borderAngle);
@@ -199,8 +211,8 @@ export const createGradientWrapper = (
             style={[borderLayerStyle, { transform: [{ rotate: spinBorder }] }]}
           >
             <Gradient
-              colors={fullBorderGradient}
-              locations={calculatedBorderLocations}
+              colors={rotatingBorderColors}
+              locations={rotatingBorderLocations}
               start={borderStart}
               end={borderEnd}
               style={StyleSheet.absoluteFill}

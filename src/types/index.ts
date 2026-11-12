@@ -29,6 +29,14 @@ export interface GradientWrapperProps {
   borderRadius?: number;
   borderLocations?: number[];
   borderAngle?: number;
+  /**
+   * When border rotation is on, concentrate the border colors into a short
+   * highlight that travels around the whole control (like a single edge
+   * sweeping the perimeter) instead of spinning a full multi-stop fill.
+   */
+  borderSweep?: boolean;
+  /** How much of the ring the sweep highlight covers, 0–1. Default 0.22. */
+  borderSweepSpan?: number;
 
   // Angles
   angle?: number;
