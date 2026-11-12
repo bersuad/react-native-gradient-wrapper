@@ -3,7 +3,9 @@ import {
   buildBorderSweepGradient,
   getFullBorderGradient,
   getRotatingLayerStyle,
+  getSweepRay,
   shouldUseIndividualBorders,
+  toTransparent,
 } from '../utils/gradientUtils';
 import { getDefaultGradients } from '../utils/themeDefaults';
 
@@ -113,6 +115,52 @@ describe('buildBorderSweepGradient', () => {
     expect(result.locations[0]).toBe(0);
     expect(result.locations[result.locations.length - 1]).toBe(1);
     expect(result.locations[4]).toBe(0.2);
+  });
+});
+
+describe('toTransparent', () => {
+  it.each([
+    ['#00e5ff', '#00e5ff00'],
+    ['#abc', '#aabbcc00'],
+    ['#abcd', '#aabbcc00'],
+    ['#11223344', '#11223300'],
+    ['rgb(10, 20, 30)', 'rgba(10,20,30,0)'],
+    ['rgba(10,20,30,0.5)', 'rgba(10,20,30,0)'],
+    ['red', 'transparent'],
+  ])('%s -> %s', (input, expected) => {
+    expect(toTransparent(input)).toBe(expected);
+  });
+});
+
+describe('getSweepRay', () => {
+  it('returns null before layout', () => {
+    expect(getSweepRay(['#0ff', '#70f'], 0.2, 0, 0)).toBeNull();
+  });
+
+  it('runs from the top edge of the rotating layer to its centre', () => {
+    // 300x100 -> diagonal 317
+    const ray = getSweepRay(['#00e5ff', '#7b61ff'], 0.2, 300, 100, 2)!;
+    expect(ray.style.top).toBe(0);
+    expect(ray.style.height).toBe(317 / 2);
+    expect(ray.style.left + ray.style.width / 2).toBeCloseTo(317 / 2);
+  });
+
+  it('fades from a transparent highlight color to the highlight and back', () => {
+    const ray = getSweepRay(['#00e5ff', '#7b61ff'], 0.2, 300, 100)!;
+    expect(ray.colors).toEqual(['#7b61ff00', '#7b61ff', '#00e5ff', '#7b61ff', '#7b61ff00']);
+    expect(ray.locations).toEqual([0, 0.25, 0.5, 0.75, 1]);
+  });
+
+  it('scales the width with span', () => {
+    const narrow = getSweepRay(['#fff'], 0.1, 600, 600)!;
+    const wide = getSweepRay(['#fff'], 0.3, 600, 600)!;
+    expect(narrow.style.width).toBe(120);
+    expect(wide.style.width).toBe(360);
+  });
+
+  it('stays narrower than the inner area so it cannot light the opposite edge', () => {
+    // span would ask for 0.5 * (260 + 56) = 158px; the inner height is 56 - 2 * 3 = 50.
+    expect(getSweepRay(['#fff'], 0.5, 260, 56, 3)!.style.width).toBe(50);
   });
 });
 

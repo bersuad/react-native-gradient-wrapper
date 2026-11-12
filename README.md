@@ -94,6 +94,32 @@ The border turns continuously. `borderRotationSpeed` is the time for one full tu
 </GradientWrapper>
 ```
 
+### Sweep border
+
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/sweep-border.gif" alt="Button with a single cyan highlight travelling around its border" width="360" />
+
+With `borderSweep`, the border shows one short highlight that travels around the whole control instead of a full spinning gradient. The first color in `borderGradient` is the center of the highlight and the second color is its edges. `borderSweepSpan` sets roughly how much of the border the highlight covers, from 0 to 1.
+
+```tsx
+<GradientWrapper
+  borderGradient={['#00e5ff', '#7b61ff']}
+  borderRotation="clockwise"
+  borderRotationSpeed={6000}
+  borderSweep
+  borderSweepSpan={0.2}
+  borderWidth={3}
+  borderRadius={28}
+  backgroundGradient={['#0b1220', '#152238']}
+  angle={90}
+  contentStyle={{ padding: 10, paddingHorizontal: 28, alignItems: 'center' }}
+  onPress={() => {}}
+>
+  <Text style={{ color: '#fff' }}>Sweep Border Button</Text>
+</GradientWrapper>
+```
+
+`borderSweep` only applies while the border is rotating. Use an opaque background: with `noFill` or `overlayBg`, the highlight also shows through the middle of the control.
+
 ### Animated background
 
 <img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/animated-background.gif" alt="Background gradient cycling through brown, green and blue" width="360" />
@@ -170,6 +196,8 @@ All props are optional except `children`.
 | `borderRotation`       | `'clockwise' \| 'anticlockwise' \| 'none'` | `'none'`      | Spin the border.                                                  |
 | `borderRotationSpeed`  | `number`                                   | `3000`        | Milliseconds per full turn.                                       |
 | `stopBorderAfter`      | `number`                                   |               | Stop the border rotation after this many milliseconds.            |
+| `borderSweep`          | `boolean`                                  | `false`       | While rotating, show one highlight travelling around the border.  |
+| `borderSweepSpan`      | `number`                                   | `0.22`        | Roughly how much of the border the sweep highlight covers, 0–1.   |
 
 `borderGradient` takes priority over the per-side props. When one or two sides are set, each side is drawn separately. When three or four sides are set, their colors are joined into one gradient around the border.
 

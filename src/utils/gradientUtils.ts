@@ -123,6 +123,75 @@ export const buildBorderSweepGradient = (
 };
 
 /**
+ * Fully transparent version of a color. Fading to the same hue avoids the dark
+ * fringe you get when fading to transparent black on iOS and Android.
+ */
+export const toTransparent = (color: string): string => {
+  const c = color.trim();
+  const hex = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(c);
+  if (hex) {
+    let h = hex[1];
+    if (h.length <= 4) {
+      h = h
+        .split('')
+        .map((ch) => ch + ch)
+        .join('');
+    }
+    return `#${h.slice(0, 6)}00`;
+  }
+  const rgb = /^rgba?\(([^,]+),([^,]+),([^,)]+)/i.exec(c);
+  if (rgb) {
+    return `rgba(${rgb[1].trim()},${rgb[2].trim()},${rgb[3].trim()},0)`;
+  }
+  return 'transparent';
+};
+
+/**
+ * The sweep highlight: a strip from the centre of the rotating border layer
+ * out to its edge. Wherever the layer has turned, the strip crosses the border
+ * ring at exactly one point, so a single highlight travels around the whole
+ * control (a conic-gradient look built from a linear gradient).
+ *
+ * `span` is roughly the share of the perimeter the highlight covers.
+ * Returns null until the control has been measured.
+ */
+export const getSweepRay = (
+  colors: string[],
+  span: number,
+  width: number,
+  height: number,
+  borderWidth = 0,
+): {
+  colors: string[];
+  locations: number[];
+  style: { position: 'absolute'; top: number; left: number; width: number; height: number };
+} | null => {
+  if (width <= 0 || height <= 0) return null;
+
+  const d = Math.ceil(Math.sqrt(width * width + height * height));
+  const s = Math.min(0.8, Math.max(0.05, span));
+  // Half the perimeter is width + height; the soft edges make the bright part look about half as wide.
+  // Cap the width so the strip's base near the centre stays inside the inner area,
+  // where the background hides it; otherwise it lights the opposite edge too.
+  const maxWidth = Math.max(4, Math.min(width, height) - 2 * borderWidth);
+  const rayWidth = Math.min(maxWidth, Math.max(4, s * (width + height)));
+  const highlight = colors[0] ?? '#ffffff';
+  const mid = colors[1] ?? highlight;
+
+  return {
+    colors: [toTransparent(mid), mid, highlight, mid, toTransparent(mid)],
+    locations: [0, 0.25, 0.5, 0.75, 1],
+    style: {
+      position: 'absolute',
+      top: 0,
+      left: (d - rayWidth) / 2,
+      width: rayWidth,
+      height: d / 2,
+    },
+  };
+};
+
+/**
  * Style for a layer that rotates inside a w×h box. The layer is a square the
  * size of the box's diagonal, centred, so the corners stay covered at every angle.
  */

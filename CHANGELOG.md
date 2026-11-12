@@ -7,6 +7,7 @@
 - Entry points for each gradient library: `react-native-gradient-wrapper/expo` and `react-native-gradient-wrapper/linear-gradient`. Metro bundles only the library you import.
 - `createGradientWrapper(Component)` to build a wrapper around any LinearGradient-compatible component.
 - `noFill` and `overlayBg` props for transparent backgrounds.
+- `borderSweep` and `borderSweepSpan`: while the border rotates, a single highlight travels around the whole control.
 - Exported types: `GradientWrapperProps`, `RotationDirection`, `ThemeMode`, `GradientComponent`.
 - CommonJS and ES module builds with an `exports` map, so the package works in Jest and Node as well as Metro.
 

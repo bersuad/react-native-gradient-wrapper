@@ -15,6 +15,7 @@ import {
   buildBorderSweepGradient,
   getFullBorderGradient,
   getRotatingLayerStyle,
+  getSweepRay,
   shouldUseIndividualBorders,
 } from '../utils/gradientUtils';
 import { getDefaultGradients } from '../utils/themeDefaults';
@@ -110,7 +111,8 @@ export const createGradientWrapper = (
     // — required on web, where 0deg→360deg alone is a no-op.
     const spinBg = rotateBgAnim.interpolate({
       inputRange: [0, 1],
-      outputRange: backgroundRotation === 'anticlockwise' ? ['0deg', '-360deg'] : ['0deg', '360deg'],
+      outputRange:
+        backgroundRotation === 'anticlockwise' ? ['0deg', '-360deg'] : ['0deg', '360deg'],
       extrapolate: 'extend',
     });
 
@@ -127,10 +129,10 @@ export const createGradientWrapper = (
 
     const hasBorderProps = Boolean(
       borderGradient ||
-        borderTopGradient ||
-        borderBottomGradient ||
-        borderLeftGradient ||
-        borderRightGradient,
+      borderTopGradient ||
+      borderBottomGradient ||
+      borderLeftGradient ||
+      borderRightGradient,
     );
 
     const useIndividualBorders = shouldUseIndividualBorders({
@@ -160,6 +162,10 @@ export const createGradientWrapper = (
     const calculatedBorderLocations = fullBorder.locations;
     const rotatingBorderColors = rotatingBorder.colors;
     const rotatingBorderLocations = rotatingBorder.locations;
+    const sweepRay =
+      borderSweep && borderRotation !== 'none'
+        ? getSweepRay(fullBorder.colors, borderSweepSpan, size.width, size.height, borderWidth)
+        : null;
 
     const { start: bgStart, end: bgEnd } = angleToDirection(angle);
     const { start: borderStart, end: borderEnd } = angleToDirection(borderAngle);
@@ -210,13 +216,24 @@ export const createGradientWrapper = (
             pointerEvents="none"
             style={[borderLayerStyle, { transform: [{ rotate: spinBorder }] }]}
           >
-            <Gradient
-              colors={rotatingBorderColors}
-              locations={rotatingBorderLocations}
-              start={borderStart}
-              end={borderEnd}
-              style={StyleSheet.absoluteFill}
-            />
+            {sweepRay ? (
+              <Gradient
+                testID="border-sweep-ray"
+                colors={sweepRay.colors}
+                locations={sweepRay.locations}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={sweepRay.style}
+              />
+            ) : (
+              <Gradient
+                colors={rotatingBorderColors}
+                locations={rotatingBorderLocations}
+                start={borderStart}
+                end={borderEnd}
+                style={StyleSheet.absoluteFill}
+              />
+            )}
           </Animated.View>
         );
       }

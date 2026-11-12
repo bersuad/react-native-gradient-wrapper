@@ -119,6 +119,41 @@ describe('GradientWrapper', () => {
     });
   });
 
+  it('draws a single sweep ray inside the rotating layer when borderSweep is on', async () => {
+    await render(
+      <GradientWrapper
+        borderGradient={['#00e5ff', '#7b61ff']}
+        borderRotation="clockwise"
+        borderSweep
+        borderSweepSpan={0.2}
+      >
+        <Text>Sweep</Text>
+      </GradientWrapper>,
+    );
+    // Not measured yet: no ray.
+    expect(screen.queryByTestId('border-sweep-ray')).toBeNull();
+
+    await fireEvent(screen.root!, 'layout', {
+      nativeEvent: { layout: { x: 0, y: 0, width: 300, height: 100 } },
+    });
+    const ray = screen.getByTestId('border-sweep-ray');
+    expect(StyleSheet.flatten(ray.props.style)).toMatchObject({ top: 0, height: 317 / 2 });
+    expect(StyleSheet.flatten(ray.parent?.props.style)).toMatchObject({ width: 317, height: 317 });
+  });
+
+  it('ignores borderSweep when the border does not rotate', async () => {
+    await render(
+      <GradientWrapper borderGradient={['#00e5ff', '#7b61ff']} borderSweep>
+        <Text>Still</Text>
+      </GradientWrapper>,
+    );
+    await fireEvent(screen.root!, 'layout', {
+      nativeEvent: { layout: { x: 0, y: 0, width: 300, height: 100 } },
+    });
+    expect(screen.queryByTestId('border-sweep-ray')).toBeNull();
+    expect(colorsOf(gradients()[0])).toEqual(['#00e5ff', '#7b61ff']);
+  });
+
   it('calls onPress and is not pressable without handlers', async () => {
     const onPress = jest.fn();
     const { rerender } = await render(
