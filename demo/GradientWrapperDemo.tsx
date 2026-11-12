@@ -20,7 +20,7 @@ const GradientWrapperDemo = () => {
         borderGradient={['#00e5ff', '#7b61ff']}
         backgroundGradient={['#0b1220', '#152238']}
         borderRotation="clockwise"
-        borderRotationSpeed={2200}
+        borderRotationSpeed={6000}
         borderSweep
         borderSweepSpan={0.2}
         borderWidth={3}
