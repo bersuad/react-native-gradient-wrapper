@@ -6,7 +6,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { createGradientWrapper } from '../src/core/createGradientWrapper';
 import type { GradientComponent } from '../src/types/gradient';
 
-export const README_EXAMPLES = ['button', 'spin', 'animated', 'sides'] as const;
+export const README_EXAMPLES = [
+  'button',
+  'spin',
+  'sweep',
+  'animated',
+  'sides',
+] as const;
 export type ReadmeExample = (typeof README_EXAMPLES)[number];
 
 export default function ReadmeExamples({ example }: { example: ReadmeExample }) {
@@ -51,6 +57,28 @@ export default function ReadmeExamples({ example }: { example: ReadmeExample }) 
         style={styles.card}
       >
         <Text style={[styles.text, styles.cardText]}>Glowing card</Text>
+      </GradientWrapper>
+    );
+  }
+
+  if (example === 'sweep') {
+    content = (
+      <GradientWrapper
+        borderGradient={['#00e5ff', '#7b61ff']}
+        borderAngle={0}
+        backgroundGradient={['#0b1220', '#152238']}
+        angle={90}
+        borderRotation="clockwise"
+        borderRotationSpeed={6000}
+        borderSweep
+        borderSweepSpan={0.2}
+        borderWidth={3}
+        borderRadius={28}
+        contentStyle={styles.buttonContent}
+        style={styles.sweepButton}
+        onPress={() => {}}
+      >
+        <Text style={styles.text}>Sweep Border Button</Text>
       </GradientWrapper>
     );
   }
@@ -107,6 +135,7 @@ const styles = StyleSheet.create({
   center: { alignItems: 'center', justifyContent: 'center' },
   buttonContent: { padding: 10, paddingHorizontal: 28, alignItems: 'center' },
   card: { width: 280 },
+  sweepButton: { width: 260 },
   text: { color: '#fff', fontWeight: '600', fontSize: 16 },
   cardText: { padding: 16 },
 });
