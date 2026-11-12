@@ -1,161 +1,220 @@
-# GradientWrapper for React Native
+# react-native-gradient-wrapper
 
-**GradientWrapper** is a flexible, animated wrapper component for React Native that adds background and border gradients with support for animations, angle directions, theming, and per-side customization. It’s designed to be beginner-friendly while still powerful enough for advanced use cases.
+A React Native wrapper component that adds gradient backgrounds and gradient borders, with optional rotation and color animation. Works with Expo (`expo-linear-gradient`) and bare React Native (`react-native-linear-gradient`).
 
-* ✅ Custom **background gradients**
-* ✅ Animated **gradient transitions** (color morphing)
-* ✅ Rotating **background** or **border gradients**
-* ✅ **Light/Dark/Auto** theme-aware defaults
-* ✅ **Angle-based** direction control for gradients
-* ✅ **Per-side** border gradient customization
-* ✅ Touchable feedback (scale on press)
-* ✅ Optional gradient animation stop timers (`stopBackgroundAfter`, `stopBorderAfter`)
+- Gradient backgrounds and borders, set by angle
+- Color animation that cycles through the background colors
+- Rotating background or border, with an optional stop timer
+- Per-side border gradients
+- Light, dark and system-theme defaults
+- Scale feedback when pressed
 
----
+Animations run on the native driver, so they don't block the JS thread.
+
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/all-demo.png" alt="GradientWrapper examples" width="320" />
 
 ## Installation
 
-Install peer dependencies first:
-
-```bash
-npm install react-native-gradient-wrapper react-native-linear-gradient
-```
-
-If you're using **Expo**, install the linear gradient library with:
+**Expo**
 
 ```bash
 npx expo install react-native-gradient-wrapper expo-linear-gradient
 ```
 
-Expo will automatically handle linking and compatibility.
+**Bare React Native**
 
----
+```bash
+npm install react-native-gradient-wrapper react-native-linear-gradient
+cd ios && pod install
+```
 
-## Border Gradient Usage
+## Importing
 
-## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/demo-button.png" alt="Animated Gradient Button" width="250" />
+Import from the entry point that matches the gradient library you installed. Metro then bundles only that library.
+
 ```tsx
-import { GradientWrapper } from 'react-native-gradient-wrapper';
+// Expo
+import { GradientWrapper } from 'react-native-gradient-wrapper/expo';
 
+// Bare React Native
+import { GradientWrapper } from 'react-native-gradient-wrapper/linear-gradient';
+```
+
+The root import, `'react-native-gradient-wrapper'`, still works. It picks a library at runtime, which some Metro setups can't bundle when only one of the two libraries is installed. Prefer one of the entry points above.
+
+To use a different LinearGradient-compatible component, build your own wrapper:
+
+```tsx
+import { createGradientWrapper } from 'react-native-gradient-wrapper/expo';
+import MyGradient from './MyGradient';
+
+export const GradientWrapper = createGradientWrapper(MyGradient);
+```
+
+## Examples
+
+### Gradient border button
+
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/demo-button.png" alt="Gradient border button" width="250" />
+
+```tsx
 <GradientWrapper
-  borderGradient={['rgba(0, 0, 255, 0.9)', 'rgba(186, 0, 146, 0.97)']} 
-  borderRadius={30}
-  stopBorderAfter={300000} // stop after 30 sec
-  borderAngle={46.38} // instead of start and end X,Y you can use angle
+  borderGradient={['rgba(0, 0, 255, 0.9)', 'rgba(186, 0, 146, 0.97)']}
+  borderAngle={46}
   borderWidth={2}
-  contentStyle={{
-    height: 35,
-    width: '100%',
-    alignItems: 'center',
-    alignContent: 'center',
-    flex: 1,
-    padding: 10,
-  }}
-  style={{ margin: 0 }}
-  enableFeedback
+  borderRadius={30}
   backgroundGradient={['rgb(155, 70, 0)', 'rgb(50, 0, 56)']}
-  backgroundLocations={[0, 0.6, 1]}
-  angle={90} // angle for background color
+  angle={90}
+  contentStyle={{ padding: 10, alignItems: 'center' }}
+  onPress={() => console.log('pressed')}
 >
-  <TouchableOpacity onPress={() => setSpeed(prev => Math.max(1000, prev - 500))}>
-    <Text style={{ color: '#FFFFFF' }}>Animated Border Button</Text>
-  </TouchableOpacity>
+  <Text style={{ color: '#fff' }}>Gradient Button</Text>
 </GradientWrapper>
-
 ```
 
-## <img src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/background-demo.png" alt="Animated Background Gradient" width="250" />
-## <video src="https://github.com/bersuad/react-native-gradient-wrapper/blob/main/src/assets/gradient-demo.mp4" controls autoplay loop width="100%"/>
+### Spinning border
 
-## Background Color Usage
+The border turns continuously. `borderRotationSpeed` is the time for one full turn. With `stopBorderAfter`, the current turn finishes and the border comes to rest.
+
 ```tsx
-import { GradientWrapper } from 'react-native-gradient-wrapper';
-
-    <GradientWrapper
-      backgroundGradient={['#5A3F37', '#2C7744', '#5A3F37']}
-      backgroundRotationSpeed={4000}
-      animated={true} //color rotation
-      style={styles.container}
-      borderWidth={0}
-      angle={46.36}
-    //   backgroundLocations={[0,0.5, 1]}//for background location
-      borderRadius={0}
-    >
-      <View style={styles.content}>
-        <Text style={styles.title}>Animated Background Gradient</Text>
-      </View>
-    </GradientWrapper>
-
+<GradientWrapper
+  borderGradient={['#f7971e', '#ffd200', '#f7971e']}
+  borderRotation="clockwise"
+  borderRotationSpeed={3000}
+  stopBorderAfter={30000}
+  borderWidth={4}
+  borderRadius={16}
+  backgroundGradient={['#1a1a2e', '#16213e']}
+  angle={90}
+>
+  <Text style={{ color: '#fff', padding: 16 }}>Glowing card</Text>
+</GradientWrapper>
 ```
 
----
+### Animated background
 
-## Props Reference
+<img src="https://raw.githubusercontent.com/bersuad/react-native-gradient-wrapper/main/docs/assets/background-demo.png" alt="Animated background gradient" width="250" />
 
-| Prop                      | Type                                       | Description                                       |
-| ------------------------- | ------------------------------------------ | ------------------------------------------------- |
-| `backgroundGradient`      | `string[]`                                 | Background color array                            |
-| `borderGradient`          | `string[]`                                 | Border color array (fallback if no sides defined) |
-| `borderTopGradient`       | `string[]`                                 | Top border only                                   |
-| `borderBottomGradient`    | `string[]`                                 | Bottom border only                                |
-| `borderLeftGradient`      | `string[]`                                 | Left border only                                  |
-| `borderRightGradient`     | `string[]`                                 | Right border only                                 |
-| `borderWidth`             | `number`                                   | Width of the border (default `2`)                 |
-| `borderRadius`            | `number`                                   | Corner radius (default `10`)                      |
-| `backgroundRotation`      | `'clockwise' \| 'anticlockwise' \| 'none'` | Rotating background effect                        |
-| `borderRotation`          | `'clockwise' \| 'anticlockwise' \| 'none'` | Rotating border effect                            |
-| `backgroundRotationSpeed` | `number`                                   | Milliseconds for one background rotation cycle    |
-| `borderRotationSpeed`     | `number`                                   | Milliseconds for one border rotation cycle        |
-| `stopBackgroundAfter`     | `number`                                   | Stops background animation after X ms             |
-| `stopBorderAfter`         | `number`                                   | Stops border animation after X ms                 |
-| `animated`                | `boolean`                                  | Animate colors across gradient stops              |
-| `angle`                   | `number`                                   | Direction in degrees (e.g. `45`) for background   |
-| `borderAngle`             | `number`                                   | Direction in degrees for border gradient          |
-| `theme`                   | `'light' \| 'dark' \| 'auto'`              | Theme-based fallback gradient colors              |
-| `onPress`, `onLongPress`  | `() => void`                               | Press handlers                                    |
-| `enableFeedback`          | `boolean`                                  | Scale animation on press (default `true`)         |
+With `animated`, the background cycles through every color in `backgroundGradient`. `backgroundRotationSpeed` sets how long each color step takes.
 
----
+```tsx
+<GradientWrapper
+  animated
+  backgroundGradient={['#5A3F37', '#2C7744', '#1A2980']}
+  backgroundRotationSpeed={4000}
+  angle={46}
+  borderWidth={0}
+  borderRadius={0}
+  style={{ flex: 1 }}
+>
+  <Text style={{ color: '#fff' }}>Animated background</Text>
+</GradientWrapper>
+```
 
-## Comparison with Other Libraries
+[Watch the demo video](https://github.com/bersuad/react-native-gradient-wrapper/blob/main/docs/assets/gradient-demo.mp4)
 
-| Feature / Library                   | react-native-gradient-wrapper | react-native-linear-gradient | react-native-gradients | react-native-animated-linear-gradient |
-| ----------------------------------- | ----------------- | ---------------------------- | ---------------------- | ------------------------------------- |
-| ✅ Background gradient support       | ✅                 | ✅                            | ✅                      | ✅                                     |
-| ✅ Border gradient                   | ✅                 | ❌                            | ❌                      | ❌                                     |
-| ✅ Animated color transition (morph) | ✅                 | ❌                            | ❌                      | ✅ (only background)                   |
-| ✅ Rotation animation support        | ✅                 | ❌                            | ❌                      | ❌                                     |
-| ✅ Per-side border control           | ✅                 | ❌                            | ❌                      | ❌                                     |
-| ✅ Theme-aware fallback colors       | ✅                 | ❌                            | ❌                      | ❌                                     |
-| ✅ Pressable feedback (scale)        | ✅                 | ❌                            | ❌                      | ❌                                     |
-| ✅ Angle-based gradient direction    | ✅                 | ✅                            | ✅                      | ✅                                     |
-| ✅ Stop animations after delay       | ✅                 | ❌                            | ❌                      | ❌                                     |
+### Per-side borders
 
-> **Note:** `GradientWrapper` internally uses `react-native-linear-gradient` and extends it with a complete system of wrappers, animations, fallback themes, and UI feedback.
-
----
-
-## Ideal Use Cases
-
-* Buttons with animated borders
-* Cards with glowing outlines
-* Containers with gradient backgrounds
-* Interactive boxes with animated themes
-* Light/Dark mode responsive UI blocks
-
----
-
-## Future Plans
-
-* Support for Lottie-like morphing gradients
-* Web support (React Native Web)
-* Built-in presets (e.g. fire, neon, galaxy)
-
----
+```tsx
+<GradientWrapper
+  borderTopGradient={['#ff512f', '#dd2476']}
+  borderBottomGradient={['#1a2980', '#26d0ce']}
+  borderWidth={3}
+>
+  <Text style={{ padding: 16 }}>Top and bottom borders</Text>
+</GradientWrapper>
+```
 
 ## Props
 
-Check `src/index.tsx` for all available props and defaults.
+All props are optional except `children`.
+
+### Layout
+
+| Prop           | Type                   | Default | Description                                     |
+| -------------- | ---------------------- | ------- | ----------------------------------------------- |
+| `children`     | `ReactNode`            |         | Content to render inside the wrapper.           |
+| `style`        | `StyleProp<ViewStyle>` |         | Style for the outer container (size, margin).   |
+| `contentStyle` | `StyleProp<ViewStyle>` |         | Style for the inner content view (padding).     |
+| `borderWidth`  | `number`               | `2`     | Border thickness. Use `0` for no border.        |
+| `borderRadius` | `number`               | `10`    | Corner radius. Use a large value for a pill.    |
+
+### Background
+
+| Prop                      | Type                                       | Default         | Description                                                                                   |
+| ------------------------- | ------------------------------------------ | --------------- | --------------------------------------------------------------------------------------------- |
+| `backgroundGradient`      | `string[]`                                 | theme default   | Background colors.                                                                            |
+| `backgroundLocations`     | `number[]`                                 |                 | Color stop positions from 0 to 1. With `animated`, only used if it has exactly 2 values.      |
+| `angle`                   | `number`                                   |                 | Gradient direction in degrees. `0` is left to right, `90` is top to bottom.                   |
+| `animated`                | `boolean`                                  | `false`         | Cycle through the background colors. Needs at least 2 colors.                                 |
+| `backgroundRotation`      | `'clockwise' \| 'anticlockwise' \| 'none'` | `'none'`        | Spin the background.                                                                          |
+| `backgroundRotationSpeed` | `number`                                   | `4000`          | Milliseconds per full turn when rotating, and per color step when `animated`.                 |
+| `stopBackgroundAfter`     | `number`                                   |                 | Stop the background rotation after this many milliseconds.                                    |
+| `noFill`                  | `boolean`                                  | `false`         | Skip the background and keep it transparent. With `borderGradient`, draws a solid border from its first color. |
+| `overlayBg`               | `boolean`                                  | `false`         | Make the background colors transparent while still rendering the gradient layer.             |
+
+### Border
+
+| Prop                   | Type                                       | Default       | Description                                                       |
+| ---------------------- | ------------------------------------------ | ------------- | ----------------------------------------------------------------- |
+| `borderGradient`       | `string[]`                                 | theme default | Colors for the whole border.                                      |
+| `borderLocations`      | `number[]`                                 | even spacing  | Color stop positions. Ignored unless it matches `borderGradient`. |
+| `borderAngle`          | `number`                                   |               | Border gradient direction in degrees.                             |
+| `borderTopGradient`    | `string[]`                                 |               | Top border colors.                                                |
+| `borderBottomGradient` | `string[]`                                 |               | Bottom border colors.                                             |
+| `borderLeftGradient`   | `string[]`                                 |               | Left border colors.                                               |
+| `borderRightGradient`  | `string[]`                                 |               | Right border colors.                                              |
+| `borderRotation`       | `'clockwise' \| 'anticlockwise' \| 'none'` | `'none'`      | Spin the border.                                                  |
+| `borderRotationSpeed`  | `number`                                   | `3000`        | Milliseconds per full turn.                                       |
+| `stopBorderAfter`      | `number`                                   |               | Stop the border rotation after this many milliseconds.            |
+
+`borderGradient` takes priority over the per-side props. When one or two sides are set, each side is drawn separately. When three or four sides are set, their colors are joined into one gradient around the border.
+
+### Theme and interaction
+
+| Prop             | Type                          | Default  | Description                                                     |
+| ---------------- | ----------------------------- | -------- | --------------------------------------------------------------- |
+| `theme`          | `'light' \| 'dark' \| 'auto'` | `'auto'` | Picks the default colors. `'auto'` follows the system setting.  |
+| `onPress`        | `() => void`                  |          | Makes the wrapper pressable.                                    |
+| `onLongPress`    | `() => void`                  |          | Long-press handler. Also makes the wrapper pressable.           |
+| `enableFeedback` | `boolean`                     | `true`   | Scale down slightly while pressed.                              |
+
+### Notes
+
+- Set `angle` and `borderAngle` to get a visible gradient direction. Without them the start and end points are the same, which matches 1.0.x behavior.
+- Rotating layers are sized to the container's diagonal, so the corners stay covered while they spin.
+
+## Comparison
+
+| Feature                       | react-native-gradient-wrapper | react-native-linear-gradient | react-native-gradients | react-native-animated-linear-gradient |
+| ----------------------------- | ----------------------------- | ---------------------------- | ---------------------- | ------------------------------------- |
+| Background gradient           | Yes                           | Yes                          | Yes                    | Yes                                   |
+| Border gradient               | Yes                           | No                           | No                     | No                                    |
+| Animated color transition     | Yes                           | No                           | No                     | Background only                       |
+| Rotation animation            | Yes                           | No                           | No                     | No                                    |
+| Per-side border control       | Yes                           | No                           | No                     | No                                    |
+| Theme-aware default colors    | Yes                           | No                           | No                     | No                                    |
+| Press feedback                | Yes                           | No                           | No                     | No                                    |
+| Angle-based direction         | Yes                           | Yes                          | Yes                    | Yes                                   |
+| Stop animations after a delay | Yes                           | No                           | No                     | No                                    |
+
+GradientWrapper draws its gradients with `expo-linear-gradient` or `react-native-linear-gradient`, depending on the entry point you import.
+
+## Development
+
+```bash
+npm install
+npm run typecheck   # TypeScript
+npm run lint        # ESLint and Prettier
+npm test            # Jest
+npm run build       # CommonJS, ES modules and type definitions in lib/
+```
+
+The demo app in `demo/demo` is an Expo project:
+
+```bash
+cd demo/demo && npm install && npx expo start
+```
 
 ## License
 

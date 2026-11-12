@@ -1,5 +1,5 @@
 {
-  "name": "react-native-gradient-wrapper-demo",
+  "name": "demo",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,18 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~53.0.17",
+    "@expo/metro-runtime": "~5.0.5",
+    "expo": "~53.0.20",
+    "expo-linear-gradient": "~14.1.5",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
+    "react-dom": "^19.0.0",
     "react-native": "0.79.5",
-    "react-native-gradient-wrapper": "file:..",
-    "react-native-linear-gradient": "^2.8.3"
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "typescript": "^5.0.0"
   },
   "private": true
 }

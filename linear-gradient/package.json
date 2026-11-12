@@ -1,0 +1,6 @@
+{
+  "main": "../lib/commonjs/linear-gradient.js",
+  "module": "../lib/module/linear-gradient.js",
+  "react-native": "../src/linear-gradient.ts",
+  "types": "../lib/typescript/commonjs/linear-gradient.d.ts"
+}

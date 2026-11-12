@@ -1,0 +1,6 @@
+{
+  "main": "../lib/commonjs/expo.js",
+  "module": "../lib/module/expo.js",
+  "react-native": "../src/expo.ts",
+  "types": "../lib/typescript/commonjs/expo.d.ts"
+}
